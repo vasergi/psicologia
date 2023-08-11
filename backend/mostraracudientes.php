@@ -1,7 +1,5 @@
 <?php
-include 'conexion.php';
-$consulta="select * from acudientes";
-$resultado= mysqli_query($conexion,$consulta);
+
 ?>
 <!doctype html>
 	<head>
@@ -42,18 +40,19 @@ $resultado= mysqli_query($conexion,$consulta);
           <a class="nav-link" href="mostraracudientes.php">Mostrar acudientes</a>
         </li>
         
-
-       
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
     </div>
   </div>
 </nav>
 	<div class="container">	
 	<div style="text-align:center;">
 			<h1>MOSTRAR ACUDIENTES</h1>
+			
+			<form action="" method="get">
+				<input type="text" class="form-control" name="textobuscar" id="" placeholder="Digite el indicio de busqueda">
+				<button type="submit" class="btn btn-success" name="btn" >Buscar</button>
+		    </form>
+
+
 			<fielset style="background-color: aliceblue";>
 			<div class="table-responsive">
 			    <table class="table table-primary">
@@ -68,6 +67,15 @@ $resultado= mysqli_query($conexion,$consulta);
 						</tr>
 		            </thead>
 			<?php
+
+			if(isset($_GET['textobuscar'])) {
+				//capturo lo que digitó el usuario en la  búsqueda
+				$buscar=$_GET['textobuscar'];
+				$buscar="%$buscar%";
+
+			include 'conexion.php';
+			$consulta="select * from acudientes WHERE nombres LIKE '$buscar' OR apellidos LIKE '$buscar' OR correo LIKE '$buscar' OR telefono LIKE '$buscar' OR documentoa LIKE '$buscar' ";
+			$resultado= mysqli_query($conexion,$consulta);
 			while($vec=mysqli_fetch_array($resultado)){?>
 			<tbody>
 			    <tr class="">
@@ -82,7 +90,8 @@ $resultado= mysqli_query($conexion,$consulta);
 					<a href="formularioacudienteselim.php?doc=<?php echo $vec[0] ?>">Elim</a>
 			    </td>
 			</tr>
-		<?php } ?>
+		<?php } 
+	       } ?>
 		    
 		    </table>
 	        </fielset>
